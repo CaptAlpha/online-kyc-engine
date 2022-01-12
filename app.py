@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 import numpy as np
 from PIL import Image
 import base64
+import os
 import re
 from io import StringIO, BytesIO
 
@@ -14,7 +15,7 @@ def hello_world():
     filepath2 = "NOT FOUND"
     if request.method == 'POST':
         img = request.files['pic']
-        pan = request.files['pan']
+        card = request.files['card']
 
         name = request.form['user']
         email = request.form['email']
@@ -34,7 +35,7 @@ def hello_world():
             os.remove("static/user/pan_user.jpg") 
 
         filepath = os.path.join('static/assets', img.filename)
-        filepath2 = os.path.join('static/assets', pan.filename)
+        filepath2 = os.path.join('static/assets', card.filename)
         newName = "static/assets/cover.jpg"
         newName2 = "static/assets/watermark.jpg"
 
@@ -42,8 +43,8 @@ def hello_world():
         
         print(pan)
 
-        file.save(filepath)
-        file2.save(filepath2)
+        img.save(filepath)
+        card.save(filepath2)
         fp = os.rename(filepath, newName)
         fp2 = os.rename(filepath2, newName2)
         
@@ -68,7 +69,7 @@ def hook():
     image_data = base64.b64decode(str(image_data))
     
     image_PIL = Image.open(BytesIO(image_data))
-    image_save = image_PIL.save('flask-app\static\image.png')
+    image_save = image_PIL.save('static\image.png')
 
     return ''
 
@@ -80,3 +81,4 @@ def hook():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    #show all logs
