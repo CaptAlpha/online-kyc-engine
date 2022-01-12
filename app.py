@@ -1,4 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+import numpy as np
+from PIL import Image
+import base64
+import re
+from io import StringIO, BytesIO
+
 
 app = Flask(__name__)
 
@@ -7,15 +13,17 @@ def hello_world():
     
     return render_template('index.html')
 
-@app.route("/image", methods=['GET', 'POST'])
-def image():
-    if request.method == 'GET':
-        #retrieve image from request
-        image = request.files['image']
-        #save image to disk
-        image.save('./static/image.jpg')
-        #return image
-        return jsonify({"image": "image.jpg"})
-    else:
-        return jsonify({"error": "Method not allowed"})
+
+@app.route('/hook', methods=['POST'])
+def hook():
+    image_b64 = request.values['imageBase64']
+    image_data = re.sub('^data:image/.+;base64,', '', image_b64)
+    image_data = base64.b64decode(str(image_data))
     
+    image_PIL = Image.open(BytesIO(image_data))
+    image_save = image_PIL.save('flask-app\static\image.png')
+
+    return ''
+
+if __name__ == '__main__':
+    app.run(debug=True)
