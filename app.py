@@ -34,10 +34,10 @@ def hello_world():
         if os.path.isfile("static/user/pan_user.jpg"):
             os.remove("static/user/pan_user.jpg") 
 
-        filepath = os.path.join('static/assets', img.filename)
-        filepath2 = os.path.join('static/assets', card.filename)
-        newName = "static/assets/cover.jpg"
-        newName2 = "static/assets/watermark.jpg"
+        filepath = os.path.join('static/user', img.filename)
+        filepath2 = os.path.join('static/user', card.filename)
+        newName = "static/user/user.jpg"
+        newName2 = "static/user/pan_user.jpg"
 
         
         
@@ -69,7 +69,7 @@ def hook():
     image_data = base64.b64decode(str(image_data))
     
     image_PIL = Image.open(BytesIO(image_data))
-    image_save = image_PIL.save('static\image.png')
+    image_save = image_PIL.save('static/image.png')
 
     return ''
 
