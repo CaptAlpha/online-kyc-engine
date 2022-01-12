@@ -74,7 +74,7 @@
 
 
   <section class="section">
-    <form action="">
+    <form action="" method="post" enctype="multipart/form-data">
       <div class="field">
         <p class="control has-icons-left has-icons-right">
           <input class="input" type="text"  name="user" placeholder="Name">
@@ -133,7 +133,7 @@
 
       <div class="file has-name">
         <label class="file-label">
-          <input class="file-input"   type="file" name="pic">
+          <input class="file-input input" required type="file" name="pic">
           <span class="file-cta">
             <span class="file-icon">
               <i class="fas fa-upload"></i>
@@ -151,7 +151,7 @@
       <br><br><br>
       <div class="file has-name">
         <label class="file-label">
-          <input class="file-input"   type="file" name="card">
+          <input class="file-input" required type="file" name="card">
           <span class="file-cta">
             <span class="file-icon">
               <i class="fas fa-upload"></i>
@@ -166,10 +166,11 @@
         </label>
       </div>
       <br><br><br>
+      <input type="submit" value="Submit" class="submit">
       <div class="field">
         <p class="control">
           <button class="button is-success">
-            <input type="submit" value="Submit" class="submit">
+            
           </button>
         </p>
       </div>
