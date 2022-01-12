@@ -1,2 +1,4 @@
-flask
+Flask==2.0.2
+numpy==1.19.4
+Pillow==9.0.0
 gunicorn==19.9.0

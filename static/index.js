@@ -28,17 +28,22 @@ function handleSuccess(stream){
 
 init();
 
-//Draw the video and save the 
+
+
 var context = canvas.getContext('2d');
 snap.addEventListener('click', function(){
     context.drawImage(video, 0, 0, 640, 480);
-    //
-    
-
-
-
-
-   
+    //Save image to flask server via ajax
+    var dataURL = canvas.toDataURL();
+    $.ajax({
+    type: "POST",
+    url: "/hook",
+    data:{
+        imageBase64: dataURL
+    }
+    }).done(function() {
+    console.log('sent');
+    });
 
     
 
