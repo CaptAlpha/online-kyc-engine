@@ -5,6 +5,7 @@ import base64
 import os
 import re
 from io import StringIO, BytesIO
+import face_recognition
 
 
 app = Flask(__name__)
@@ -70,6 +71,15 @@ def hook():
     
     image_PIL = Image.open(BytesIO(image_data))
     image_save = image_PIL.save('static/image.png')
+    original=face_recognition.load_image_file('static/user/user.jpg')
+    captured=face_recognition.load_image_file('static/image.png')
+    knownFace=[]
+    faces=[]
+    knownEncoding=face_recognition.face_encodings(original)[0]
+    knownFace.append(knownEncoding)
+    unknownEncodings=face_recognition.face_encodings(captured)
+    result=face_recognition.compare_faces(knownFace,unknownEncodings[0])
+    print(result)
 
     return ''
 
