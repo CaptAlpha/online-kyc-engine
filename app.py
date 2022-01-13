@@ -89,7 +89,7 @@ def status():
     if request.method=='POST':
         time.sleep(0.5)
         #pan verification code
-        file='static\\user\\pan_user.jpg'
+        file='static/image.png'
         lines = api.ocr_file(open(file, 'rb'))
         x = lines.split()
         global pan_status
@@ -118,7 +118,7 @@ def status():
 
 @app.route('/pan_status',methods=['POST','GET'])
 def pan_status():
-    return render_template('pan_status.html',status=pan_status,pan_num=pan_num)
+    return render_template('pan_status.html',pan_status=pan_status,pan_num=pan_num)
 
 if __name__ == '__main__':
     app.run(debug=True)
