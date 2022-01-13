@@ -18,13 +18,11 @@ def hello_world():
     filepath = "NOT FOUND"
     filepath2 = "NOT FOUND"
     if request.method == 'POST':
-        img = request.files['pic']
-        card = request.files['card']
+        img = request.files['photograph']
+        card = request.files['pan-card']
 
-        name = request.form['user']
-        email = request.form['email']
-        phone = request.form['phone']
-        pan = request.form['pan']
+        name = request.form['f-name']
+        pan = request.form['pan-card-number']
         
         if not os.path.isdir('static/user'):
             os.mkdir('static/user')
@@ -49,7 +47,7 @@ def hello_world():
             
         return redirect(url_for('verify'))
     
-    return render_template('index.html')
+    return render_template('signupkyc.html')
 
 
 
@@ -64,15 +62,13 @@ def verify():
         knownFace.append(knownEncoding)
         unknownEncodings=face_recognition.face_encodings(captured)
         result=face_recognition.compare_faces(knownFace,unknownEncodings[0])
-        global success
         if result==[True]:
-            success="Verified"
+            return redirect(url_for('status'))
         elif result==[False]:
-            success="Verification failed"
-        print(success)
-        return redirect(url_for('status'))
+            return redirect(url_for('verify'))
+        
 
-    return render_template('verify.html')
+    return render_template('pic_capture.html')
 
 
 @app.route('/hook', methods=['POST','GET'])
@@ -93,8 +89,8 @@ def status():
         lines = api.ocr_file(open(file, 'rb'))
         x = lines.split()
         global pan_status
-        global pan_num
         for line in x:
+            print('hello',line)
             regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
             # Compile the ReGex
             p = re.compile(regex)
@@ -107,18 +103,16 @@ def status():
             # Return if the PAN Card number
             # matched the ReGex
             if(re.search(p, line) and len(line) == 10):
-                pan_status=True
-                pan_num=line
-                break
+                print(line)
+                return redirect(url_for('pan_status'))
             else:
                 pan_status=False
 
-        return redirect(url_for('pan_status'))
-    return render_template('status.html',success=success);
+    return render_template('pan_veri.html');
 
 @app.route('/pan_status',methods=['POST','GET'])
 def pan_status():
-    return render_template('pan_status.html',pan_status=pan_status,pan_num=pan_num)
+    return render_template('user_confirm.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
