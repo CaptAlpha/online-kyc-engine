@@ -17,6 +17,7 @@ api = ocrspace.API()
 def hello_world():
     filepath = "NOT FOUND"
     filepath2 = "NOT FOUND"
+    global pan
     if request.method == 'POST':
         img = request.files['photograph']
         card = request.files['pan-card']
@@ -53,12 +54,12 @@ def verify():
         knownEncoding=face_recognition.face_encodings(original)[0]
         knownFace.append(knownEncoding)
         unknownEncodings=face_recognition.face_encodings(captured)
-        os.remove("static/image.png")
         if len(unknownEncodings)>0:
             result=face_recognition.compare_faces(knownFace,unknownEncodings[0])
         else:
             return redirect(url_for('verify'))
         if result==[True]:
+            os.remove("static/image.png")
             return redirect(url_for('status'))
         elif result==[False]:
             return redirect(url_for('verify'))
@@ -83,7 +84,6 @@ def status():
         file='static/image.png'
         lines = api.ocr_file(open(file, 'rb'))
         x = lines.split()
-        os.remove(file)
         global pan_status
         for line in x:
             regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
@@ -91,8 +91,8 @@ def status():
             if(line == None):
                 return redirect(url_for('status'))
 
-            if(re.search(p, line) and len(line) == 10):
-                print(line)
+            if(re.search(p, line) and len(line) == 10 and line==pan):
+                os.remove(file)
                 return redirect(url_for('pan_status'))
             else:
                 pan_status=False
