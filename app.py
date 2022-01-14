@@ -27,18 +27,10 @@ def hello_world():
         if not os.path.isdir('static/user'):
             os.mkdir('static/user')
 
-        if os.path.isfile("static/user/user.jpg"):
-            os.remove("static/user/user.jpg") 
-        
-        if os.path.isfile("static/user/pan_user.jpg"):
-            os.remove("static/user/pan_user.jpg") 
-
         filepath = os.path.join('static/user', img.filename)
         filepath2 = os.path.join('static/user', card.filename)
         newName = "static/user/user.jpg"
         newName2 = "static/user/pan_user.jpg"
-
-        print(pan)
 
         img.save(filepath)
         card.save(filepath2)
@@ -54,14 +46,18 @@ def hello_world():
 @app.route("/verify", methods=['GET', 'POST'])
 def verify():
     if request.method=='POST':
-        time.sleep(0.5)
+        time.sleep(1)
         original=face_recognition.load_image_file('static/user/user.jpg')
         captured=face_recognition.load_image_file('static/image.png')
         knownFace=[]
         knownEncoding=face_recognition.face_encodings(original)[0]
         knownFace.append(knownEncoding)
         unknownEncodings=face_recognition.face_encodings(captured)
-        result=face_recognition.compare_faces(knownFace,unknownEncodings[0])
+        os.remove("static/image.png")
+        if len(unknownEncodings)>0:
+            result=face_recognition.compare_faces(knownFace,unknownEncodings[0])
+        else:
+            return redirect(url_for('verify'))
         if result==[True]:
             return redirect(url_for('status'))
         elif result==[False]:
@@ -83,25 +79,18 @@ def hook():
 @app.route("/status",methods=['POST','GET'])
 def status():
     if request.method=='POST':
-        time.sleep(0.5)
-        #pan verification code
+        time.sleep(1)
         file='static/image.png'
         lines = api.ocr_file(open(file, 'rb'))
         x = lines.split()
+        os.remove(file)
         global pan_status
         for line in x:
-            print('hello',line)
             regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
-            # Compile the ReGex
             p = re.compile(regex)
-        
-            # If the PAN Card number
-            # is empty return false
             if(line == None):
-                return False
-        
-            # Return if the PAN Card number
-            # matched the ReGex
+                return redirect(url_for('status'))
+
             if(re.search(p, line) and len(line) == 10):
                 print(line)
                 return redirect(url_for('pan_status'))
@@ -112,6 +101,8 @@ def status():
 
 @app.route('/pan_status',methods=['POST','GET'])
 def pan_status():
+    os.remove('static\\user\\pan_user.jpg')
+    os.remove('static\\user\\user.jpg')
     return render_template('user_confirm.html')
 
 if __name__ == '__main__':
