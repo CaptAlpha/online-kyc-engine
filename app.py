@@ -46,7 +46,7 @@ def hello_world():
 @app.route("/verify", methods=['GET', 'POST'])
 def verify():
     if request.method=='POST':
-        time.sleep(1)
+        time.sleep(5)
         original=face_recognition.load_image_file('static/user/user.jpg')
         captured=face_recognition.load_image_file('static/image.png')
         knownFace=[]
@@ -79,7 +79,7 @@ def hook():
 @app.route("/status",methods=['POST','GET'])
 def status():
     if request.method=='POST':
-        time.sleep(1)
+        time.sleep(5)
         file='static/image.png'
         lines = api.ocr_file(open(file, 'rb'))
         x = lines.split()
