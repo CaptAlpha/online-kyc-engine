@@ -95,7 +95,7 @@ def status():
                 os.remove(file)
                 return redirect(url_for('pan_status'))
             else:
-                pan_status=False
+                return redirect(url_for('status'))
 
     return render_template('pan_veri.html');
 
