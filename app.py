@@ -94,8 +94,8 @@ def status():
             if(re.search(p, line) and len(line) == 10 and line==pan):
                 os.remove(file)
                 return redirect(url_for('pan_status'))
-            else:
-                return redirect(url_for('status'))
+                
+        return redirect(url_for("status"))
 
     return render_template('pan_veri.html');
 
