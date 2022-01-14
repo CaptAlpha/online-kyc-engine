@@ -1,0 +1,52 @@
+*{
+    margin: 0;
+    padding: 0;  
+}
+#pic-capture
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+#pic-capture h1
+{
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 48px;
+    text-transform: uppercase;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-bottom: 20px;
+}
+.picture
+{
+    border-radius: 47px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+.favi
+{
+    font-size: 2rem;
+    color:  #3FA3E3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 20px;
+}
+@media screen and (max-width: 800px)
+{
+    .form
+    {
+        width: 80%;
+    }
+}
