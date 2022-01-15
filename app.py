@@ -7,13 +7,9 @@ import re
 from io import StringIO, BytesIO
 import face_recognition
 import time
-import ocrspace
 import requests
-import json
-import pandas as pd
 
 app = Flask(__name__)
-api = ocrspace.API()
 
 @app.route("/", methods=['GET', 'POST'])
 def hello_world():
