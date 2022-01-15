@@ -30,14 +30,6 @@ def hello_world():
         if not os.path.isdir('static/user'):
             os.mkdir('static/user')
 
-        #if 'static\user\user.jpg' is found, delete it
-        if os.path.isfile('static/user/user.jpg'):
-            os.remove('static/user/user.jpg')
-
-        #if 'static\user\user.jpg' is found, delete it
-        if os.path.isfile('static/user/pan_user.jpg'):
-            os.remove('static/user/pan_user.jpg')
-
         filepath = os.path.join('static/user', img.filename)
         filepath2 = os.path.join('static/user', card.filename)
         newName = "static/user/user.jpg"
@@ -82,7 +74,6 @@ def hook():
     image_data = base64.b64decode(str(image_data))
     image_PIL = Image.open(BytesIO(image_data))
     image_save = image_PIL.save('static/image.png')
- 
     return ''
 
 @app.route("/status",methods=['POST','GET'])
